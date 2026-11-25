@@ -1,0 +1,12 @@
+backend/compose.yaml:35: trailing whitespace.
+[32m+[m[32m    - book_covers:/app/uploads/covers[m[41m [m
+backend/src/main/java/com/estante/estante_api/book/Book.java:125: trailing whitespace.
+[32m+[m[41m    [m
+backend/src/main/java/com/estante/estante_api/book/BookNotFoundException.java:1: trailing whitespace.
+[32m+[m[32m//will return 404 when someone tries to edit or delete a book that doesnt exist[m[41m [m
+frontend/src/app/add-book/add-book.component.html:13: trailing whitespace.
+[32m+[m[41m        [m
+frontend/src/app/book-api.service.ts:58: trailing whitespace.
+[32m+[m[41m    [m
+frontend/src/library-styles/account/account.css:143: trailing whitespace.
+[32m+[m[32m}[m[41m [m
