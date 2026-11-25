@@ -1,0 +1,61 @@
+<main>
+  <section class="page-card">
+    <div class="page-card-body">
+      <h1>{{ isRegister ? 'Create account' : 'Log in' }}</h1>
+
+      <form (ngSubmit)="submit()" #authForm="ngForm">
+        <div class="form-field" *ngIf="isRegister">
+          <label for="name">Name</label>
+          <input
+            id="name"
+            name="name"
+            [(ngModel)]="name"
+            required
+            maxlength="160">
+        </div>
+
+        <div class="form-field">
+          <label for="email">Email</label>
+          <input
+            id="email"
+            name="email"
+            type="email"
+            [(ngModel)]="email"
+            required
+            email
+            maxlength="254">
+        </div>
+
+        <div class="form-field">
+          <label for="password">Password</label>
+          <input
+            id="password"
+            name="password"
+            type="password"
+            [(ngModel)]="password"
+            required
+            [minlength]="isRegister ? 8 : 1">
+        </div>
+
+        <p *ngIf="isRegister" class="form-hint">
+          Use at least 8 characters, including a letter and a number.
+        </p>
+
+        <button type="submit" class="btn" [disabled]="authForm.invalid || isSubmitting">
+          {{ isSubmitting ? 'Please wait…' : (isRegister ? 'Create account' : 'Log in') }}
+        </button>
+
+        <p *ngIf="errorMessage" class="form-message" role="alert">
+          {{ errorMessage }}
+        </p>
+      </form>
+
+      <p *ngIf="isRegister">
+        Already have an account? <a routerLink="/login">Log in</a>
+      </p>
+      <p *ngIf="!isRegister">
+        Need an account? <a routerLink="/register">Register</a>
+      </p>
+    </div>
+  </section>
+</main>

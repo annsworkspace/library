@@ -1,0 +1,21 @@
+<main>
+  <section class="page-card page-card--flip">
+    <div class="page-card-image"><img src="assets/library/profile.jpg" alt="A cozy reading scene"></div>
+    <div class="page-card-body">
+      <h1>Your account</h1>
+      <p class="lead">Keep your details up to date.</p>
+      <p *ngIf="errorMessage" class="form-message" role="alert">{{ errorMessage }}</p>
+      <form (ngSubmit)="saveProfile()" #profileForm="ngForm">
+        <div class="form-row">
+          <div class="form-field"><label for="first-name">First name</label><input id="first-name" name="firstName" [(ngModel)]="profile.firstName" required></div>
+          <div class="form-field"><label for="last-name">Last name</label><input id="last-name" name="lastName" [(ngModel)]="profile.lastName"></div>
+        </div>
+        <div class="form-field"><label for="email">Email</label><input id="email" name="email" type="email" [(ngModel)]="profile.email" required></div>
+        <div class="form-field"><label for="fav-genre">Favorite genre</label><select id="fav-genre" name="favoriteGenre" [(ngModel)]="profile.favoriteGenre"><option *ngFor="let genre of genres" [value]="genre">{{ genre }}</option></select></div>
+        <div class="form-field"><label for="password">New password</label><input id="password" name="password" type="password" [(ngModel)]="password" autocomplete="new-password"></div>
+        <button type="submit" class="btn" [disabled]="profileForm.invalid">Save changes</button>
+        <p *ngIf="saved" class="form-message" role="status">Profile details are saved in this browser. Password changes are not available yet.</p>
+      </form>
+    </div>
+  </section>
+</main>

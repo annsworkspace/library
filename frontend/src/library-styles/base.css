@@ -1,0 +1,280 @@
+/* ==========================================================================
+   Snoopy's Library - base.css (shared by every page) (home page)
+   Shared: design tokens, reset, header, main, footer.
+   Linked from style.css, add.css and account.css via @import.
+   ========================================================================== */
+
+
+/* 1. DESIGN TOKENS (edit these first)
+   ========================================================================== */
+:root {
+  --color-bg: #faf7f2;
+  --color-surface: #ffffff;
+  --color-surface-alt: #f1ebe0;
+  --color-text: #2b2622;
+  --color-text-muted: #6b625a;
+  --color-primary: #7a2e2e;
+  --color-primary-dark: #5c2121;
+  --color-accent: #c8963e;
+  --color-border: #e2d9ca;
+
+  --font-heading: Georgia, "Times New Roman", serif;
+  --font-body: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+
+  --space-1: 0.25rem;
+  --space-2: 0.5rem;
+  --space-3: 1rem;
+  --space-4: 1.5rem;
+  --space-5: 2.5rem;
+  --space-6: 4rem;
+
+  --radius: 8px;
+  --shadow-sm: 0 1px 3px rgba(43, 38, 34, 0.08);
+  --shadow-md: 0 6px 18px rgba(43, 38, 34, 0.12);
+  --content-width: 1120px;
+  --transition: 0.2s ease;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --color-bg: #1c1917;
+    --color-surface: #26221f;
+    --color-surface-alt: #2e2925;
+    --color-text: #f1ebe0;
+    --color-text-muted: #b5aa9c;
+    --color-primary: #d98a8a;
+    --color-primary-dark: #c27272;
+    --color-border: #3b352f;
+  }
+}
+
+
+/* 2. RESET & BASE
+   ========================================================================== */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;           /* keeps footer at the bottom on short pages */
+  margin: 0;
+  font-family: var(--font-body);
+  line-height: 1.6;
+  color: var(--color-text);
+  background-color: var(--color-bg);
+  -webkit-font-smoothing: antialiased;
+}
+
+img {
+  display: block;
+  max-width: 100%;
+  height: auto;
+}
+
+a {
+  color: var(--color-primary);
+  text-underline-offset: 3px;
+  transition: color var(--transition);
+}
+
+a:hover {
+  color: var(--color-primary-dark);
+}
+
+:focus-visible {
+  outline: 3px solid var(--color-accent);
+  outline-offset: 3px;
+}
+
+h1, h2, h3, h4 {
+  font-family: var(--font-heading);
+  line-height: 1.2;
+  margin: 0 0 var(--space-3);
+}
+
+p {
+  margin: 0 0 var(--space-3);
+}
+
+
+/* 3. HEADER
+   ========================================================================== */
+header {
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-2) var(--space-4);
+  padding: var(--space-3) max(var(--space-3), calc((100% - var(--content-width)) / 2));
+  background-color: var(--color-surface);
+  border-bottom: 1px solid var(--color-border);
+  box-shadow: var(--shadow-sm);
+}
+
+.brand {
+  text-decoration: none;
+}
+
+.brand-name {
+  font-family: var(--font-heading);
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: var(--color-primary);
+}
+
+.header-note {
+  flex: 1;
+  margin: 0;
+  font-style: italic;
+  color: var(--color-text-muted);
+}
+
+.header-actions {
+  display: flex;
+  gap: var(--space-2);
+}
+
+.header-icon-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 2.5rem;
+  height: 2.5rem;
+  font-size: 1.25rem;
+  line-height: 1;
+  color: var(--color-primary);
+  text-decoration: none;
+  background-color: var(--color-surface-alt);
+  border: 1px solid var(--color-border);
+  border-radius: 50%;
+  transition: background-color var(--transition), color var(--transition),
+              transform var(--transition);
+}
+
+.header-icon-button:hover {
+  color: #fff;
+  background-color: var(--color-primary);
+  transform: translateY(-1px);
+}
+
+
+/* dark mode: keep header icon hover text readable on the lighter primary */
+@media (prefers-color-scheme: dark) {
+  .header-icon-button:hover {
+    color: #1c1917;
+  }
+}
+
+
+/* 4. MAIN CONTENT
+   ========================================================================== */
+main {
+  flex: 1;
+  width: 100%;
+  max-width: var(--content-width);
+  margin-inline: auto;
+  padding: var(--space-5) var(--space-3);
+}
+
+
+/* 6. FOOTER
+   ========================================================================== */
+.site-footer {
+  margin-top: auto;
+  padding: var(--space-5) var(--space-3);
+  font-size: 0.875rem;
+  color: #e9e0d2;
+  background-color: #2b2622;
+}
+
+.site-footer-inner {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: var(--space-4);
+  align-items: start;
+  max-width: var(--content-width);
+  margin-inline: auto;
+}
+
+.site-footer a {
+  color: var(--color-accent);
+  text-decoration: none;
+}
+
+.site-footer a:hover {
+  color: #fff;
+  text-decoration: underline;
+}
+
+.footer-brand {
+  font-family: var(--font-heading);
+  font-size: 1.25rem;
+  font-weight: 700;
+}
+
+.footer-brand .brand-name {
+  color: #fff;
+  font-size: inherit;
+}
+
+.footer-brand .brand-suffix {
+  color: var(--color-accent);
+}
+
+.footer-copy {
+  margin: var(--space-1) 0 0;
+  color: #b5aa9c;
+}
+
+.footer-links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2) var(--space-4);
+}
+
+.footer-rights {
+  grid-column: 1 / -1;
+  margin: 0;
+  padding-top: var(--space-3);
+  text-align: center;
+  color: #b5aa9c;
+  border-top: 1px solid rgba(255, 255, 255, 0.15);
+}
+
+
+/* 7. RESPONSIVE (header + footer)
+   ========================================================================== */
+@media (max-width: 640px) {
+  header {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .header-note {
+    flex: none;
+  }
+
+  .site-footer-inner {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    transition: none !important;
+    scroll-behavior: auto !important;
+  }
+}

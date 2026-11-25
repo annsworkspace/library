@@ -1,0 +1,93 @@
+<section class="banner" aria-label="Welcome">
+  <img class="banner-image" src="assets/library/Gemini_Generated_Image_ewrigvewrigvewri.jpg" alt="Cozy reading nook with books">
+  <div class="banner-text"><p class="banner-kicker">A book a day keeps the boredom away.</p></div>
+</section>
+
+<nav class="genre-nav" aria-label="Filter books by genre">
+  <button type="button" [class.active]="selectedGenre === 'all'" [attr.aria-pressed]="selectedGenre === 'all'" (click)="selectGenre('all')">All Genres</button>
+  <button *ngFor="let genre of genres" type="button" [class.active]="selectedGenre === genre" [attr.aria-pressed]="selectedGenre === genre" (click)="selectGenre(genre)">{{ genre }}</button>
+</nav>
+
+  <section class="summary-cards" aria-label="Library summary">
+    <article class="summary-card">
+      <h2>Total books</h2>
+      <p>{{ totalBooks }}</p>
+    </article>
+
+    <article class="summary-card">
+      <h2>Currently reading</h2>
+      <p>{{ currentlyReadingBooks }}</p>
+    </article>
+
+    <article class="summary-card">
+      <h2>Read</h2>
+      <p>{{ readBooks }}</p>
+    </article>
+
+    <article class="summary-card">
+    <h2>Currently loaned</h2>
+    <p>{{ loanedBooks }}</p>
+  </article>
+
+  </section>
+
+<div class="status-filter">
+  <label for="statusFilter">Filter by reading status</label>
+  <select id="statusFilter" [(ngModel)]="selectedStatus">
+    <option value="ALL">All statuses</option>
+    <option *ngFor="let status of readingStatuses" [value]="status.value">
+      {{ status.label }}
+    </option>
+  </select>
+</div>
+
+<main>
+  <p *ngIf="errorMessage" class="form-message" role="alert">{{ errorMessage }}</p>
+
+  <section *ngIf="visibleBooks.length; else emptyShelf" class="book-grid" aria-label="Your books">
+    <article class="book-card" *ngFor="let book of visibleBooks">
+
+      <img
+        class="book-cover"
+        [src]="book.coverPath
+          ? (coverUrls[book.id] || 'assets/library/462252349282095996.jpg')
+          : 'assets/library/462252349282095996.jpg'"
+        [alt]="book.coverPath ? 'Cover of ' + book.title : 'Book cover placeholder'">
+
+      <div class="book-info">
+        <h2 class="book-title">{{ book.title }}</h2>
+        <p class="book-author">{{ book.author }}</p>
+        <p class="book-category">{{ book.genre }}</p>
+        <p class="book-status">
+          {{ book.readingStatus === 'WANT_TO_READ'
+              ? 'Want to read'
+              : book.readingStatus === 'READING'
+                ? 'Reading'
+                : 'Read' }}
+        </p>
+        <p *ngIf="book.notes" class="book-notes">{{ book.notes }}</p>
+
+        <div class="book-actions">
+          <a class="btn" [routerLink]="['/edit', book.id]">Edit</a>
+          <button type="button" class="btn" (click)="deleteBook(book)">Delete</button>
+        </div>
+
+        <div *ngIf="book.loanDate" class="book-loan">
+          <p>Loaned to: {{ book.loanedTo }}</p>
+          <p>Loan date: {{ book.loanDate }}</p>
+          <p *ngIf="book.returnedDate">Returned: {{ book.returnedDate }}</p>
+          <p *ngIf="!book.returnedDate">Currently loaned</p>
+      </div>
+
+      </div>
+    </article>
+  </section>
+
+  <ng-template #emptyShelf>
+    <section class="empty-state">
+      <h2>Your shelf is waiting</h2>
+      <p>Add your first book to see it here.</p>
+      <a class="btn" routerLink="/add">Add a book</a>
+    </section>
+  </ng-template>
+</main>
