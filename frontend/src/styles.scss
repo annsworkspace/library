@@ -1,7 +1,7 @@
-@import './library-styles/base.css';
-@import './library-styles/home.css';
-@import './library-styles/add/add.css';
-@import './library-styles/account/account.css';
+@import './styles/base.css';
+@import './styles/features/library/home.css';
+@import './styles/features/library/add-book.css';
+@import './styles/features/account/account.css';
 
 main { min-height: 55vh; }
 .empty-state { padding: 3rem 1rem; text-align: center; color: var(--color-text-muted); }

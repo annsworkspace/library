@@ -8,4 +8,5 @@ public interface AuthorRepository extends JpaRepository<Author, Long> {
     List<Author> findAllByOrderByNameAsc();
     Optional<Author> findByNameIgnoreCase(String name);
     boolean existsByNameIgnoreCase(String name);
+    
 }

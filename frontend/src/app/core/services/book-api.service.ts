@@ -10,7 +10,7 @@ export interface LibraryBook {
   author: string;
   genre: string;
   notes: string | null;
-  coverPath?: string | null; // lets frontend send cover path when one exists and omit for books w/out cover
+  coverPath?: string | null;
   readingStatus: ReadingStatus;
   loanedTo: string | null;
   loanDate: string | null;
@@ -22,12 +22,18 @@ export interface LibraryCategory {
   name: string;
 }
 
+export interface LibraryAuthor {
+  id: number;
+  name: string;
+}
+
 export interface CoverUploadResponse {
   coverPath: string;
   recognizedLines: string[];
 }
 
-export type CreateBook = Omit<LibraryBook, 'id'>;
+export type SaveBook =
+  Omit<LibraryBook, 'id' | 'author'> & { authorId: number };
 
 @Injectable({ providedIn: 'root' })
 export class BookApiService {
@@ -43,6 +49,34 @@ export class BookApiService {
     return this.http.get<LibraryCategory[]>(`${this.apiUrl}/categories`);
   }
 
+  createCategory(name: string): Observable<LibraryCategory> {
+  return this.http.post<LibraryCategory>(`${this.apiUrl}/categories`, { name });
+  }
+
+  updateCategory(id: number, name: string): Observable<LibraryCategory> {
+    return this.http.put<LibraryCategory>(`${this.apiUrl}/categories/${id}`, { name });
+  }
+
+  deleteCategory(id: number): Observable<void> {
+    return this.http.delete<void>(`${this.apiUrl}/categories/${id}`);
+  }
+
+  getAuthors(): Observable<LibraryAuthor[]> {
+    return this.http.get<LibraryAuthor[]>(`${this.apiUrl}/authors`);
+  }
+
+  createAuthor(name: string): Observable<LibraryAuthor> {
+    return this.http.post<LibraryAuthor>(`${this.apiUrl}/authors`, { name });
+  }
+
+  updateAuthor(id: number, name: string): Observable<LibraryAuthor> {
+  return this.http.put<LibraryAuthor>(`${this.apiUrl}/authors/${id}`, { name });
+  }
+
+  deleteAuthor(id: number): Observable<void> {
+    return this.http.delete<void>(`${this.apiUrl}/authors/${id}`);
+  }
+
   getCover(filename: string): Observable<Blob> {
     return this.http.get(
       `${this.apiUrl}/books/covers/${encodeURIComponent(filename)}`,
@@ -50,12 +84,11 @@ export class BookApiService {
     );
   }
 
-  createBook(book: CreateBook): Observable<LibraryBook> {
+  createBook(book: SaveBook): Observable<LibraryBook> {
     return this.http.post<LibraryBook>(`${this.apiUrl}/books`, book);
   }
 
   uploadCover(image: File): Observable<CoverUploadResponse> {
-    
     const formData = new FormData();
     formData.append('image', image);
 
@@ -65,7 +98,7 @@ export class BookApiService {
     );
   }
 
-  updateBook(id: number, book: CreateBook): Observable<LibraryBook> {
+  updateBook(id: number, book: SaveBook): Observable<LibraryBook> {
     return this.http.put<LibraryBook>(`${this.apiUrl}/books/${id}`, book);
   }
 

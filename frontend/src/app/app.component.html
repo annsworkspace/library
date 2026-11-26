@@ -24,6 +24,8 @@
         <a href="mailto:hello@snoopyslibrary.example">Email</a>
         <a href="https://example.com/snoopyslibrary-facebook" target="_blank" rel="noopener noreferrer">Facebook</a>
         <a href="https://example.com/snoopyslibrary-instagram" target="_blank" rel="noopener noreferrer">Instagram</a>
+        <a *ngIf="authService.isAdmin()" routerLink="/admin/categories"> Manage categories </a>
+        <a *ngIf="authService.isAdmin()" routerLink="/admin/authors">Manage authors</a>
       </nav>
     </div>
     <p class="footer-rights">© {{ currentYear }} Snoopy's Library. All rights reserved.</p>

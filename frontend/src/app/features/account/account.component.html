@@ -1,0 +1,110 @@
+<main>
+  <section class="page-card page-card--flip">
+    <div class="page-card-image">
+      <img src="assets/library/profile.jpg" alt="A cozy reading scene">
+    </div>
+
+    <div class="page-card-body">
+      <h1>Your account</h1>
+      <p class="lead">Keep your details up to date.</p>
+
+      <form (ngSubmit)="saveProfile()" #profileForm="ngForm">
+        <div class="form-field">
+          <label for="name">Name</label>
+          <input
+            id="name"
+            name="name"
+            [(ngModel)]="profile.name"
+            required
+            maxlength="160">
+        </div>
+
+        <div class="form-field">
+          <label for="email">Email</label>
+          <input
+            id="email"
+            name="email"
+            type="email"
+            [(ngModel)]="profile.email"
+            required
+            email
+            maxlength="254">
+        </div>
+
+        <div class="form-field">
+          <label for="favoriteGenre">Favorite genre</label>
+          <select
+            id="favoriteGenre"
+            name="favoriteGenre"
+            [(ngModel)]="profile.favoriteGenre">
+            <option [ngValue]="null">No favorite genre</option>
+            <option *ngFor="let genre of genres" [ngValue]="genre">
+              {{ genre }}
+            </option>
+          </select>
+        </div>
+
+        <button
+          type="submit"
+          class="btn"
+          [disabled]="profileForm.invalid || isSavingProfile">
+          {{ isSavingProfile ? 'Saving…' : 'Save profile' }}
+        </button>
+
+        <p *ngIf="saved" class="form-message" role="status">
+          Account details saved.
+        </p>
+        <p *ngIf="errorMessage" class="form-message" role="alert">
+          {{ errorMessage }}
+        </p>
+      </form>
+
+      <hr>
+
+      <h2>Change password</h2>
+      <form (ngSubmit)="changePassword()" #passwordForm="ngForm">
+        <div class="form-field">
+          <label for="currentPassword">Current password</label>
+          <input
+            id="currentPassword"
+            name="currentPassword"
+            type="password"
+            [(ngModel)]="currentPassword"
+            autocomplete="current-password"
+            required>
+        </div>
+
+        <div class="form-field">
+          <label for="newPassword">New password</label>
+          <input
+            id="newPassword"
+            name="newPassword"
+            type="password"
+            [(ngModel)]="newPassword"
+            autocomplete="new-password"
+            required
+            minlength="8"
+            pattern="(?=.*[A-Za-z])(?=.*[0-9]).{8,}">
+        </div>
+
+        <p class="form-hint">
+          Use at least 8 characters, including a letter and a number.
+        </p>
+
+        <button
+          type="submit"
+          class="btn"
+          [disabled]="passwordForm.invalid || isChangingPassword">
+          {{ isChangingPassword ? 'Changing…' : 'Change password' }}
+        </button>
+
+        <p *ngIf="passwordSaved" class="form-message" role="status">
+          Password changed.
+        </p>
+        <p *ngIf="passwordError" class="form-message" role="alert">
+          {{ passwordError }}
+        </p>
+      </form>
+    </div>
+  </section>
+</main>

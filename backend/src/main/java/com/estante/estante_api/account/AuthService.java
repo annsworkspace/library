@@ -6,7 +6,10 @@ import java.time.temporal.ChronoUnit;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.oauth2.jose.jws.MacAlgorithm;
-import org.springframework.security.oauth2.jwt.*;
+import org.springframework.security.oauth2.jwt.JwsHeader;
+import org.springframework.security.oauth2.jwt.JwtClaimsSet;
+import org.springframework.security.oauth2.jwt.JwtEncoder;
+import org.springframework.security.oauth2.jwt.JwtEncoderParameters;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -33,14 +36,22 @@ public class AuthService {
         String email = request.email().trim().toLowerCase();
 
         if (userRepository.existsByEmailIgnoreCase(email)) {
-            throw new IllegalArgumentException("An account with this email already exists.");
+            throw new IllegalArgumentException(
+                    "An account with this email already exists.");
         }
 
         boolean firstAccount = userRepository.count() == 0;
-        AppUser user = userRepository.save(new AppUser(
+
+        AppUser user = new AppUser(
                 request.name().trim(),
                 email,
-                passwordEncoder.encode(request.password())));
+                passwordEncoder.encode(request.password()));
+
+        if (firstAccount) {
+            user.promoteToAdmin();
+        }
+
+        user = userRepository.save(user);
 
         if (firstAccount) {
             bookRepository.assignUnownedBooksTo(user.getId());
@@ -52,7 +63,8 @@ public class AuthService {
     @Transactional(readOnly = true)
     public AuthResponse login(LoginRequest request) {
         AppUser user = userRepository.findByEmailIgnoreCase(request.email().trim())
-                .orElseThrow(() -> new BadCredentialsException("Invalid email or password."));
+                .orElseThrow(() ->
+                        new BadCredentialsException("Invalid email or password."));
 
         if (!passwordEncoder.matches(request.password(), user.getPasswordHash())) {
             throw new BadCredentialsException("Invalid email or password.");
@@ -61,7 +73,7 @@ public class AuthService {
         return createTokenResponse(user);
     }
 
-    private AuthResponse createTokenResponse(AppUser user) {
+    AuthResponse createTokenResponse(AppUser user) {
         Instant now = Instant.now();
         JwtClaimsSet claims = JwtClaimsSet.builder()
                 .issuer("estante-api")
@@ -76,6 +88,10 @@ public class AuthService {
         String token = jwtEncoder.encode(JwtEncoderParameters.from(header, claims))
                 .getTokenValue();
 
-        return new AuthResponse(token, user.getName(), user.getEmail(), user.getRole().name());
+        return new AuthResponse(
+                token,
+                user.getName(),
+                user.getEmail(),
+                user.getRole().name());
     }
 }

@@ -27,6 +27,9 @@ import java.util.List;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
+import org.springframework.http.HttpMethod;
+import org.springframework.security.oauth2.server.resource.authentication.JwtAuthenticationConverter;
+import org.springframework.security.oauth2.server.resource.authentication.JwtGrantedAuthoritiesConverter;
 
 @Configuration
 public class SecurityConfig {
@@ -77,10 +80,26 @@ public class SecurityConfig {
                                 "/swagger-ui/**",
                                 "/api-docs/**")
                         .permitAll()
+                        .requestMatchers(
+                            HttpMethod.POST,
+                            "/api/authors/**",
+                        "/api/categories/**")
+                        .hasRole("ADMIN")
+                        .requestMatchers(
+                            HttpMethod.PUT, 
+                            "/api/authors/**",
+                            "/api/categories/**")
+                        .hasRole("ADMIN")
+                        .requestMatchers(
+                            HttpMethod.DELETE, 
+                            "/api/authors/**", 
+                            "/api/categories/**")
+                        .hasRole("ADMIN")
                         .anyRequest()
                         .authenticated())
                 .oauth2ResourceServer(oauth ->
-                        oauth.jwt(Customizer.withDefaults()))
+                oauth.jwt(jwt ->
+                        jwt.jwtAuthenticationConverter(jwtAuthenticationConverter())))
                 .build();
     }
 
@@ -94,5 +113,17 @@ public class SecurityConfig {
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
         source.registerCorsConfiguration("/**", configuration);
         return source;
+    }
+
+    @Bean
+    JwtAuthenticationConverter jwtAuthenticationConverter() {
+        JwtGrantedAuthoritiesConverter authoritiesConverter =
+                new JwtGrantedAuthoritiesConverter();
+        authoritiesConverter.setAuthoritiesClaimName("role");
+        authoritiesConverter.setAuthorityPrefix("ROLE_");
+
+        JwtAuthenticationConverter converter = new JwtAuthenticationConverter();
+        converter.setJwtGrantedAuthoritiesConverter(authoritiesConverter);
+        return converter;
     }
 }

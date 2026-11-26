@@ -17,4 +17,7 @@ public interface BookRepository extends JpaRepository<Book, Long> {
     List<Book> findAllByOwner_EmailIgnoreCaseOrderByIdAsc(String email);
 
     Optional<Book> findByIdAndOwner_EmailIgnoreCase(Long id, String email);
+
+    boolean existsByAuthor_Id(Long authorId);
+    boolean existsByCategory_Id(Long categoryId);
 }

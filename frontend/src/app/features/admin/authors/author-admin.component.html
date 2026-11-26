@@ -1,0 +1,48 @@
+<main>
+  <section class="page-card">
+    <div class="page-card-body">
+      <h1>Manage authors</h1>
+      <p class="lead">Add or rename authors available in the library.</p>
+
+      <form (ngSubmit)="saveAuthor()" #authorForm="ngForm">
+        <div class="form-field">
+          <label for="authorName">Author name</label>
+          <input
+            id="authorName"
+            name="authorName"
+            [(ngModel)]="authorName"
+            required
+            maxlength="160">
+        </div>
+
+        <div class="book-actions">
+          <button type="submit" class="btn" [disabled]="authorForm.invalid || isSaving">
+            {{ isSaving ? 'Saving…' : (editingId === null ? 'Add author' : 'Save author') }}
+          </button>
+          <button
+            *ngIf="editingId !== null"
+            type="button"
+            class="btn"
+            (click)="cancelEdit()">
+            Cancel
+          </button>
+        </div>
+      </form>
+
+      <p *ngIf="errorMessage" class="form-message" role="alert">{{ errorMessage }}</p>
+      <p *ngIf="isLoading" role="status">Loading authors…</p>
+
+      <ul *ngIf="!isLoading && authors.length" class="category-list">
+        <li *ngFor="let author of authors">
+          <span>{{ author.name }}</span>
+          <div class="book-actions">
+            <button type="button" class="btn" (click)="editAuthor(author)">Rename</button>
+            <button type="button" class="btn" (click)="deleteAuthor(author)">Delete</button>
+          </div>
+        </li>
+      </ul>
+
+      <p *ngIf="!isLoading && authors.length === 0">No authors yet. Add one above.</p>
+    </div>
+  </section>
+</main>

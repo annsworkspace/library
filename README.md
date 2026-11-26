@@ -36,6 +36,12 @@ Open <http://localhost:4200>.
 
 The shelf and add-book form use the backend API. Profile details are still saved only in this browser; the password field is not connected to account or authentication features.
 
+## Project structure
+
+The frontend groups screens by feature under `frontend/src/app/features`. Shared application services, route guards, and HTTP interceptors live under `frontend/src/app/core`, and global styles are organized by feature under `frontend/src/styles`.
+
+The backend keeps related code together as feature modules (`book`, `account`, `author`, and `category`). Within each module, controllers handle HTTP requests, services hold business rules, and repositories handle database access. Cross-cutting security, error handling, and database migrations have their own packages or resource folders.
+
 ## API errors
 
 API errors use a shared JSON shape with a UTC timestamp, HTTP status, Portuguese message, and a `fields` array for validation errors. Unexpected server errors return a generic message; internal exception details are not exposed to clients.

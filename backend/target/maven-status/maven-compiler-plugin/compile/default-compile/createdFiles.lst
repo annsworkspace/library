@@ -1,6 +1,6 @@
+com\estante\estante_api\category\CategoryService.class
+com\estante\estante_api\category\Category.class
 com\estante\estante_api\category\CategoryController.class
 com\estante\estante_api\category\CategoryResponse.class
 com\estante\estante_api\EstanteApiApplication.class
-com\estante\estante_api\category\CategoryService.class
-com\estante\estante_api\category\Category.class
 com\estante\estante_api\category\CategoryRepository.class

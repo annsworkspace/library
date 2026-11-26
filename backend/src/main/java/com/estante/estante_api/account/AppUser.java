@@ -1,3 +1,4 @@
+//this is the account model
 package com.estante.estante_api.account;
 
 import jakarta.persistence.*;
@@ -18,6 +19,9 @@ public class AppUser {
 
     @Column(name = "password_hash", nullable = false, length = 100)
     private String passwordHash;
+
+    @Column(name = "favorite_genre", length = 80)
+    private String favoriteGenre;
 
     @Enumerated(EnumType.STRING)
     @Column(nullable = false, length = 20)
@@ -41,4 +45,25 @@ public class AppUser {
     public String getEmail() { return email; }
     public String getPasswordHash() { return passwordHash; }
     public UserRole getRole() { return role; }
+    public void promoteToAdmin() {
+    this.role = UserRole.ADMIN;
+    }
+
+    public String getFavoriteGenre() {
+    return favoriteGenre;
+    }
+
+    public void updateFavoriteGenre(String favoriteGenre) {
+        this.favoriteGenre = favoriteGenre;
+    }
+
+    public void updateProfile(String name, String email, String favoriteGenre) {
+        this.name = name;
+        this.email = email;
+        this.favoriteGenre = favoriteGenre;
+    }
+
+    public void changePassword(String passwordHash) {
+        this.passwordHash = passwordHash;
+    }
 }

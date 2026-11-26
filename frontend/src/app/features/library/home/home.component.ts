@@ -3,7 +3,7 @@ import {
   BookApiService,
   LibraryBook,
   ReadingStatus
-} from '../book-api.service';
+} from '../../../core/services/book-api.service';
 
 @Component({
   selector: 'app-home',
@@ -33,7 +33,7 @@ export class HomeComponent implements OnInit, OnDestroy {
         this.genres = categories.map(category => category.name);
       },
       error: () => {
-        this.errorMessage = 'Could not load genres. Check that the backend is running.';
+        this.errorMessage = 'Could not load genres.';
       }
     });
 
